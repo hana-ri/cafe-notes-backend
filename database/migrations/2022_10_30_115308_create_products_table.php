@@ -15,12 +15,12 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->restrictOnDelete();
             $table->integer('category_id')->constrained()->restrictOnDelete();
             $table->string('title', 190);
             $table->string('thumbnail', 190)->nullable();
             $table->text('description')->nullable();
-            $table->integer('harga')->default(0);
+            $table->integer('harga_beli')->default(0);
+            $table->integer('harga_jual')->default(0);
             $table->integer('stock')->default(0);
             $table->timestamps();
         });

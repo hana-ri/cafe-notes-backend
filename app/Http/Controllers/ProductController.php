@@ -11,6 +11,13 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
+
+    // Fungsi dari JWT
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -19,10 +26,12 @@ class ProductController extends Controller
     public function index()
     {
         try {
+            // Mencari seluruh produk
             $products = Product::all();
- 
+            
+            // Jika produk belum ada maka akan mengembalikan response dalam if
             if ($products->count() == 0) {
-            return  ResponseFormat::createResponse(404, 'No products yet.');
+                return  ResponseFormat::createResponse(404, 'No products yet.');
             }
         } catch (Exception $e) {
             return ResponseFormat::createResponse(500, 'Something went wrong on index product', $e->getMessage());    
@@ -39,6 +48,11 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        // Validasi role
+        if (!$this->validateRole()) {
+            return ResponseFormat::createResponse(401, 'You don not have permission');
+        }
+
         try {
             // Validasi data baru
             $validator = $this->validateProduct();
@@ -50,7 +64,6 @@ class ProductController extends Controller
 
             // Menampung data yang sudah divalidasi
             $validatedData = $validator->validated();
-            $validatedData['user_id'] = auth()->user()->id;
 
             // Menyimpan gambar/thumbnail produk jika ada
             if(isset($validatedData['thumbnail'])) {
@@ -80,7 +93,7 @@ class ProductController extends Controller
         try {
             $product = Product::findOrfail($id);
         } catch (Exception $e) {
-            return ResponseFormat::createResponse(404, 'Produk tidak ditemukan', $e->getMessage());
+            return ResponseFormat::createResponse(404, 'Product not found', $e->getMessage());
         } 
         return ResponseFormat::createResponse(200, 'OK', $product);
     }
@@ -94,6 +107,11 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Validasi role
+        if (!$this->validateRole()) {
+            return ResponseFormat::createResponse(401, 'You don not have permission');
+        }
+
         try {
             // Mendapatkan data lama
             $oldProduct = Product::findOrfail($id);
@@ -106,7 +124,6 @@ class ProductController extends Controller
             }
 
             $validatedData = $validator->validated();
-            $validatedData['user_id'] = auth()->user()->id;
 
             // Menyimpan gambar/thumbnail produk jika ada
             if(isset($validatedData['thumbnail'])) {
@@ -128,7 +145,7 @@ class ProductController extends Controller
 
             Product::where('id', $id)->update($validatedData);
         } catch (Exception $e) {
-            return ResponseFormat::createResponse(404, 'Something went wrong on update product', $e->getMessage());    
+            return ResponseFormat::createResponse(404, 'id product not found on update product', $e->getMessage());    
         }
         return ResponseFormat::createResponse(200, 'OK', $product);
     }
@@ -141,7 +158,13 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
+        // Validasi role
+        if (!$this->validateRole()) {
+            return ResponseFormat::createResponse(401, 'You don not have permission');
+        }
+
         try {
+            // Cari id produk jika gagal lempar pada exception
             $product = Product::findOrfail($id);
             $product->delete();
         } catch (Exception $e) {
@@ -153,14 +176,23 @@ class ProductController extends Controller
     // Validasi data
     public function validateProduct(){
         return Validator::make(request()->all(), [
-            'title' => 'required|max:190',
-            'thumbnail' => 'nullable|image|max:1024',    
-            'description' => 'nullable',
-            'description' => 'nullable',
-            'harga' => 'required|integer',
-            'stock' => 'required|integer',
-            'category_id' => 'required',
+            'title' => 'required|max:190', // Tidak boleh kosong dan panjang maksimal 190 karakter
+            'thumbnail' => 'nullable|image|max:1024', // optional jika diisi wajib berupa data gambar dan masimal 1mb
+            'description' => 'nullable', // optional
+            'description' => 'nullable', // optional
+            'harga_beli' => 'required|integer', // tidak boleh kosong dan harus integer
+            'harga_jual' => 'required|integer', // tidak boleh kosong dan harus integer
+            'stock' => 'required|integer', // tidak boleh kosong dan harus integer
+            'category_id' => 'required', // tidak boleh kosong
         ]);
+    }
+
+    public function validateRole()
+    {
+        if (auth()->user()->role == "Admin") {
+            return true;
+        }
+        return false;    
     }
 
 }
