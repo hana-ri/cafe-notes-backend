@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,12 +24,13 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('refresh', 'refresh');
 });
 
-
-// Route::controller(ProductController::class)->group(function () {
-//     Route::get('products', 'index');
-//     Route::get('product/{id}', 'show');
+// Route::controller(TransactionController::class)->group(function () {
+//     Route::get('pos', 'index');
+//     Route::post('pos', 'store');
+//     Route::get('pos/{id}', 'show');
 // });
 
 Route::apiResources([
     'product' => ProductController::class,
+    'transaction' => TransactionController::class,
 ]);
