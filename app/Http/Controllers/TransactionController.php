@@ -158,7 +158,7 @@ class TransactionController extends Controller
     {
         $transactionDetail = [
             'transaction' => $transaction,
-            'transaction_detai' => TransactionDetail::where('transaction_id', $transaction->id)->get()
+            'transaction_detail' => TransactionDetail::where('transaction_id', $transaction->id)->get()
         ];
         return ResponseFormat::createResponse(200, 'Ok', $transactionDetail);
         // return dd($transaction->transaction_details());
