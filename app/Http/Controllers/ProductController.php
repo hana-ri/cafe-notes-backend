@@ -59,7 +59,7 @@ class ProductController extends Controller
             
             // Jika ada data yang tidak valid maka akan mengembalikan response error
             if ($validator->fails()) {
-                return ResponseFormat::createResponse(400, 'Format data yang dikirim salah', $validator->messages());
+                return ResponseFormat::createResponse(400, 'Format data yang dikirim salah', $validator->errors());
             }
 
             // Menampung data yang sudah divalidasi
@@ -120,7 +120,7 @@ class ProductController extends Controller
             
             // Jika ada data yang salah maka akan mengembalikan response error
             if ($validator->fails()) {
-                return ResponseFormat::createResponse(400, 'Format data yang dikirim salah', $validator->messages());
+                return ResponseFormat::createResponse(400, 'Format data yang dikirim salah', $validator->errors());
             }
 
             $validatedData = $validator->validated();

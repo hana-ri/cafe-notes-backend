@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
@@ -33,4 +34,5 @@ Route::controller(AuthController::class)->group(function () {
 Route::apiResources([
     'product' => ProductController::class,
     'transaction' => TransactionController::class,
+    'categories' => CategoryController::class,
 ]);
