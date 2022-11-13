@@ -8,6 +8,7 @@ use App\Helpers\ResponseFormat;
 use App\Models\Product;
 use Exception;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\CloudinaryStorage;
 
 class ProductController extends Controller
 {
@@ -71,7 +72,8 @@ class ProductController extends Controller
                 $newFileName = substr(md5($request->file('thumbnail')), 6, 6).'_'.time();
                 $fileExtension = $request->file('thumbnail')->extension();
                 // Menyimpan data pada server
-                $validatedData['thumbnail'] = $request->file('thumbnail')->storeAs('product-thumbnails', "$newFileName.$fileExtension");
+                // $validatedData['thumbnail'] = $request->file('thumbnail')->storeAs('product-thumbnails', "$newFileName.$fileExtension");
+                $validatedData['thumbnail'] = CloudinaryStorage::upload($request->file('thumbnail')->getRealPath(), "$newFileName.$fileExtension");
             }
 
             // Menyimpan data ke database
@@ -135,7 +137,8 @@ class ProductController extends Controller
                 $newFileName = substr(md5($request->file('thumbnail')), 6, 6).'_'.time();
                 $fileExtension = $request->file('thumbnail')->extension();
                 // Menyimpan gambar pada server
-                $validatedData['thumbnail'] = $request->file('thumbnail')->storeAs('product-thumbnails', "$newFileName.$fileExtension");
+                // $validatedData['thumbnail'] = $request->file('thumbnail')->storeAs('product-thumbnails', "$newFileName.$fileExtension");
+                $validatedData['thumbnail'] = CloudinaryStorage::replace($oldProduct->thumbnail, $request->file('thumbnail')->getRealPath(), "$newFileName.$fileExtension");
             }
     
             $product = [
@@ -166,6 +169,7 @@ class ProductController extends Controller
         try {
             // Cari id produk jika gagal lempar pada exception
             $product = Product::findOrfail($id);
+            CloudinaryStorage::delete($product->thumbnail);
             $product->delete();
         } catch (Exception $e) {
             return ResponseFormat::createResponse(404, 'Product id not found', $e->getMessage());    
