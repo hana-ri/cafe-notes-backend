@@ -80,8 +80,9 @@ class TransactionController extends Controller
             $product = Product::findOrFail($id);
             $totalHargaProduct = $product->harga_jual * $validatedData['jumlah'][$index];
             $transactionValue['total_harga'] += $totalHargaProduct;
+            $index++;
         }
-        
+        return $transactionValue;
         // Jika kembalian < 0 / minus maka kembalikan error bahwa uang kurang
         $transactionValue['kembalian'] = $transactionValue['diterima'] - $transactionValue['total_harga'];
         if ($transactionValue['kembalian'] < 0) {
