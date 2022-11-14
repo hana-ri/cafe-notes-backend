@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             "description"=> "ini adalah deskripsi produk Strawberry Parfait",
             "harga_beli"=> 1000,
             "harga_jual"=> 2000,
+            "thumbnail" => 'https://res.cloudinary.com/dwhzll0pz/image/upload/v1668380274/product-thumbnails/2022-11-13_225754_bd35fe_1668380274.jpg',
             "stock"=> 1000, 
         ]);
 
@@ -39,6 +40,7 @@ class DatabaseSeeder extends Seeder
             "description"=> "ini adalah deskripsi produk Muffin",
             "harga_beli"=> 500,
             "harga_jual"=> 1000,
+            'thumbnail' => 'https://res.cloudinary.com/dwhzll0pz/image/upload/v1668380377/product-thumbnails/2022-11-13_225937_6b7096_1668380377.jpg',
             "stock"=> 500, 
         ]);
 
@@ -48,6 +50,7 @@ class DatabaseSeeder extends Seeder
             "description"=> "ini adalah deskripsi produk Orange Juice",
             "harga_beli"=> 2000,
             "harga_jual"=> 2500,
+            'thumbnail' => 'https://res.cloudinary.com/dwhzll0pz/image/upload/v1668380590/product-thumbnails/2022-11-13_230310_f7b52b_1668380590.jpg',
             "stock"=> 1000, 
         ]);
 
@@ -57,6 +60,7 @@ class DatabaseSeeder extends Seeder
             "description"=> "ini adalah deskripsi produk Coffe Latte",
             "harga_beli"=> 600,
             "harga_jual"=> 1200,
+            'thumbnail' => 'https://res.cloudinary.com/dwhzll0pz/image/upload/v1668380530/product-thumbnails/2022-11-13_230210_58b6d4_1668380530.jpg',
             "stock"=> 1000, 
         ]);
 

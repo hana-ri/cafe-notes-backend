@@ -101,7 +101,7 @@ class TransactionController extends Controller
                 $index = 0;
                 foreach ($validatedData['product_id'] as $id ) {
                     $product = Product::findOrFail($id);
-                    // Mendapatkan toal harga barang
+                    // Mendapatkan total harga barang didapat dari harga_jual * jumlah produk yang dibeli
                     $totalHarga = $product->harga_jual * $validatedData['jumlah'][$index];
                     // Data detail transaksi
                     $transactionDetails = [
