@@ -181,8 +181,7 @@ class ProductController extends Controller
     public function validateProduct(){
         return Validator::make(request()->all(), [
             'title' => 'required|max:190', // Tidak boleh kosong dan panjang maksimal 190 karakter
-            'thumbnail' => 'nullable|image|max:1024', // optional jika diisi wajib berupa data gambar dan masimal 1mb
-            'description' => 'nullable', // optional
+            // 'thumbnail' => 'nullable|image|max:1024', // optional jika diisi wajib berupa data gambar dan masimal 1mb
             'description' => 'nullable', // optional
             'harga_beli' => 'required|integer', // tidak boleh kosong dan harus integer
             'harga_jual' => 'required|integer', // tidak boleh kosong dan harus integer
